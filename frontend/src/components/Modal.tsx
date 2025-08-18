@@ -1,12 +1,11 @@
 "use client";
+import { SignUpData } from "@/types/auth";
 import { useState } from "react";
 
-// обязательно для использования useState, useEffect и т.д.
-
-export interface SignUpData {
-  email: string;
-  password: string;
-}
+// TODO:
+// add validation
+// add spinner
+// add error handling
 
 interface ModalProps {
   isOpen: boolean;
@@ -20,8 +19,8 @@ export default function SignUpModal({ isOpen, onClose, onSubmit }: ModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ email, password }); // передаем данные родителю
-    setEmail(""); // опционально очистить форму
+    onSubmit({ email, password });
+    setEmail("");
     setPassword("");
   };
 
