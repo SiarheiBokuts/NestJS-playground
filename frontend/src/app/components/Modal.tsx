@@ -1,0 +1,68 @@
+"use client";
+import { useState } from "react";
+
+// обязательно для использования useState, useEffect и т.д.
+
+export interface SignUpData {
+  email: string;
+  password: string;
+}
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: SignUpData) => void;
+}
+
+export default function SignUpModal({ isOpen, onClose, onSubmit }: ModalProps) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit({ email, password }); // передаем данные родителю
+    setEmail(""); // опционально очистить форму
+    setPassword("");
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
+        <h2 className="text-xl font-bold mb-4">Sign Up</h2>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="Email"
+            className="border px-3 py-2 rounded"
+          />
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="Password"
+            className="border px-3 py-2 rounded"
+          />
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+            >
+              Sign Up
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
