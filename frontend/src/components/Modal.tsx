@@ -11,9 +11,17 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: SignUpData) => void;
+  loading?: boolean;
+  error?: Error | null;
 }
 
-export default function SignUpModal({ isOpen, onClose, onSubmit }: ModalProps) {
+export default function SignUpModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  loading,
+  error,
+}: ModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -45,6 +53,14 @@ export default function SignUpModal({ isOpen, onClose, onSubmit }: ModalProps) {
             placeholder="Password"
             className="border px-3 py-2 rounded"
           />
+          {error && (
+            <p className="text-red-500 text-sm">
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {(error as any)?.response?.data?.message ||
+                "Something went wrong"}
+            </p>
+          )}
+
           <div className="flex justify-end gap-2">
             <button
               type="button"
@@ -55,7 +71,10 @@ export default function SignUpModal({ isOpen, onClose, onSubmit }: ModalProps) {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+              className={`px-4 py-2 rounded text-white ${
+                loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+              }`}
+              disabled={loading}
             >
               Sign Up
             </button>
