@@ -8,7 +8,7 @@ import {
 import { User } from './user.entity';
 // import { User } from './user.entity';
 
-@Entity()
+@Entity('todos')
 export class Todo {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   // Using string because PostgreSQL BIGINT can exceed JavaScript's safe integer range (2^53 - 1)
