@@ -1,9 +1,11 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { RegisterDto } from './auth.dto';
 import * as bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/db/entities/user.entity';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 
 const SALT_ROUNDS = 12; // Define a constant for the salt rounds
 
@@ -12,6 +14,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private configService: ConfigService,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -32,9 +35,16 @@ export class AuthService {
     );
     const user = { email: dto.email, password: hashedPassword };
 
-    await this.userRepository.save(user);
+    const savedUser = await this.userRepository.save(user);
 
-    return { email: user.email };
+    const payload = { email: user.email, id: savedUser.id };
+
+    const jwtToken = jwt.sign(
+      payload,
+      this.configService.getOrThrow('JWT_SECRET'),
+    );
+
+    return { email: user.email, jwtToken };
   }
 
   //   async validateUser(email: string, password: string) {
