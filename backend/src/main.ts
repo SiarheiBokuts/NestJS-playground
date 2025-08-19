@@ -13,6 +13,13 @@ async function bootstrap() {
     }),
   );
 
+  // enable CORS for all origins (for development only)
+  app.enableCors({
+    origin: 'http://localhost:3000', // frontend URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT ?? 4200);
 }
 bootstrap();

@@ -1,17 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import Modal from "../components/Modal";
+import Modal from "../components/auth/SignUpModal";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/services/auth";
 import { SignUpData } from "@/types/auth";
+import { useAuth } from "./context/AuthContext";
 
 export default function Home() {
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+  const { token, email, setAuth } = useAuth();
 
   const mutation = useMutation({
     mutationFn: (data: SignUpData) => signUp(data),
-    onSuccess: () => setIsSignUpModalOpen(false),
+    onSuccess: (data) => {
+      setAuth(data.jwtToken, data.email);
+      console.log("Sign Up Successful:", data);
+      setIsSignUpModalOpen(false);
+    },
   });
 
   const handleSubmit = (data: SignUpData) => {
@@ -25,15 +31,21 @@ export default function Home() {
       <header className="w-full flex justify-between items-center border-b pb-4 mb-8">
         <h1 className="text-2xl font-bold">Todo App</h1>
         <div className="flex gap-4">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Login
-          </button>
-          <button
-            onClick={() => setIsSignUpModalOpen(true)}
-            className="px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300"
-          >
-            Signup
-          </button>
+          {token && email ? (
+            <span>Logged in as: {email} </span>
+          ) : (
+            <>
+              <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Login
+              </button>
+              <button
+                onClick={() => setIsSignUpModalOpen(true)}
+                className="px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300"
+              >
+                Signup
+              </button>
+            </>
+          )}
         </div>
       </header>
 
