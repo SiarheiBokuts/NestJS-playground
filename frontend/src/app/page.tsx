@@ -2,9 +2,22 @@
 
 import { useState } from "react";
 import Modal from "../components/Modal";
+import { useMutation } from "@tanstack/react-query";
+import { signUp } from "@/services/auth";
+import { SignUpData } from "@/types/auth";
 
 export default function Home() {
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: (data: SignUpData) => signUp(data),
+    onSuccess: () => setIsSignUpModalOpen(false),
+  });
+
+  const handleSubmit = (data: SignUpData) => {
+    console.log("Submitting Sign Up Data:", data);
+    mutation.mutate(data);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start p-8 gap-8 font-sans">
@@ -60,10 +73,9 @@ export default function Home() {
       <Modal
         isOpen={isSignUpModalOpen}
         onClose={() => setIsSignUpModalOpen(false)}
-        onSubmit={(data) => {
-          console.log("Sign Up Data:", data);
-          // setIsSignUpModalOpen(false); // Close modal after submit
-        }}
+        onSubmit={handleSubmit}
+        loading={mutation.isPending}
+        error={mutation.error}
       />
     </div>
   );
