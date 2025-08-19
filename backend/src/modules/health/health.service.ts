@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 
 @Injectable()
-export class AppService {
+export class HealthService {
   constructor(private dataSource: DataSource) {}
 
   getHello(): string {
