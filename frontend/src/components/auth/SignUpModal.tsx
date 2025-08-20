@@ -28,8 +28,6 @@ export default function SignUpModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({ email, password });
-    // setEmail("");
-    // setPassword("");
   };
 
   if (!isOpen) return null;
