@@ -1,23 +1,32 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { RegisterDto } from './auth.dto';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { LoginDto, RegisterDto } from './auth.dto';
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/db/entities/user.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import { AuthResponse, JwtTokenPayload } from './auth.model';
 
 const SALT_ROUNDS = 12; // Define a constant for the salt rounds
 
 @Injectable()
 export class AuthService {
+  private readonly jwtSecret: string;
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private configService: ConfigService,
-  ) {}
+  ) {
+    this.jwtSecret = this.configService.getOrThrow('JWT_SECRET');
+  }
 
-  async register(dto: RegisterDto) {
+  async register(dto: RegisterDto): Promise<AuthResponse> {
     const existingUser = await this.userRepository.findOne({
       where: { email: dto.email },
     });
@@ -37,20 +46,38 @@ export class AuthService {
 
     const savedUser = await this.userRepository.save(user);
 
-    const payload = { email: user.email, id: savedUser.id };
+    const payload: JwtTokenPayload = { email: user.email, id: savedUser.id };
 
-    const jwtToken = jwt.sign(
-      payload,
-      this.configService.getOrThrow('JWT_SECRET'),
-    );
+    const jwtToken = jwt.sign(payload, this.jwtSecret);
 
-    return { email: user.email, jwtToken };
+    return { email: user.email, token: jwtToken };
   }
 
-  //   async validateUser(email: string, password: string) {
-  //     const user = this.users.find((u) => u.email === email);
-  //     if (!user) return null;
-  //     const isValid = await bcrypt.compare(password, user.password);
-  //     return isValid ? user : null;
-  //   }
+  async login(loginData: LoginDto): Promise<AuthResponse> {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: loginData.email },
+    });
+
+    if (!existingUser) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      loginData.password,
+      existingUser.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const payload: JwtTokenPayload = {
+      email: existingUser.email,
+      id: existingUser.id,
+    };
+
+    const jwtToken = jwt.sign(payload, this.jwtSecret);
+
+    return { email: existingUser.email, token: jwtToken };
+  }
 }

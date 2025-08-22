@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getTypeOrmConfig } from './db/typeorm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
+import { AuthMiddleware } from './middlewares/auth.middleware';
+import { TodoModule } from './modules/todo/todo.module';
 
 @Module({
   imports: [
@@ -15,8 +17,13 @@ import { HealthModule } from './modules/health/health.module';
     }),
     HealthModule,
     AuthModule,
+    TodoModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}

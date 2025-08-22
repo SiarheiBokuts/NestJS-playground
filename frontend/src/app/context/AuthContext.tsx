@@ -1,5 +1,7 @@
 "use client";
 
+import { validateToken } from "@/services/auth";
+import { AuthResponse, AuthState } from "@/types/auth";
 import { useMutation } from "@tanstack/react-query";
 import {
   createContext,
@@ -9,10 +11,7 @@ import {
   useEffect,
 } from "react";
 
-interface AuthState {
-  token: string | null;
-  email: string | null;
-}
+// TODO: use Bearer token for auth
 
 interface AuthContextType extends AuthState {
   setAuth: (token: string | null, email: string | null) => void;
@@ -22,6 +21,9 @@ interface AuthContextType extends AuthState {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  /** ==============================
+   *  State and auth methods
+   *  ============================== */
   const [auth, setAuthState] = useState<AuthState>({
     token: null,
     email: null,
@@ -38,21 +40,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuthState({ token: null, email: null });
   };
 
-  const validateMutation = useMutation({
-    mutationFn: async (token: string) => {
-      const res = await fetch("/auth/validate", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("Invalid token");
-      return res.json();
-    },
-    onSuccess: (data, token) => {
-      setAuthState({ token, email: data.email });
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({ token, email: data.email })
-      );
+  /** ==============================
+   *  Mutation: validate token
+   *  ============================== */
+  const validateMutation = useMutation<
+    Omit<AuthResponse, "token">,
+    unknown,
+    string
+  >({
+    mutationFn: (token) => validateToken(token),
+    onSuccess: (data, tokenFromMutateCall) => {
+      setAuth(tokenFromMutateCall, data.email); // обновляем authState и localStorage
     },
     onError: () => {
       setAuthState({ token: null, email: null });
@@ -60,16 +58,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
-  // Load auth state from localStorage on initial render and validate token
+  /** ==============================
+   *  Initialize auth from localStorage and validate token
+   *  ============================== */
   useEffect(() => {
     const storedAuth = localStorage.getItem("auth");
     if (storedAuth) {
-      debugger;
       const authData: AuthState = JSON.parse(storedAuth);
       validateMutation.mutate(authData.token!);
     }
   }, []);
 
+  /** ==============================
+   *  Render context provider
+   *  ============================== */
   return (
     <AuthContext.Provider
       value={{

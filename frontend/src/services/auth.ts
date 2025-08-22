@@ -1,18 +1,26 @@
-import { SignUpData } from "@/types/auth";
+import { AuthResponse, SignUpData } from "@/types/auth";
 import axios from "axios";
+import { headers } from "next/headers";
 
 const API_BASE = "http://localhost:4200/auth";
 
-export const signUp = async (
-  data: SignUpData
-): Promise<{ email: string; jwtToken: string }> => {
+export const signUp = async (data: SignUpData): Promise<AuthResponse> => {
   // Simulate a delay for demonstration purposes
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const response = await axios.post(`${API_BASE}/register`, data);
   return response.data;
 };
 
-export const login = async (data: SignUpData) => {
+export const login = async (data: SignUpData): Promise<AuthResponse> => {
   const response = await axios.post(`${API_BASE}/login`, data);
+  return response.data;
+};
+
+export const validateToken = async (
+  token: string
+): Promise<Omit<AuthResponse, "token">> => {
+  const response = await axios.post(`${API_BASE}/validate`, null, {
+    headers: { authorization: `Bearer ${token}` },
+  });
   return response.data;
 };
