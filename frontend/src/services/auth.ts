@@ -1,8 +1,7 @@
 import { AuthResponse, SignUpData } from "@/types/auth";
 import axios from "axios";
-import { headers } from "next/headers";
 
-const API_BASE = "http://localhost:4200/auth";
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/auth`;
 
 export const signUp = async (data: SignUpData): Promise<AuthResponse> => {
   // Simulate a delay for demonstration purposes

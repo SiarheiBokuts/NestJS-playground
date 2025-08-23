@@ -26,6 +26,10 @@ export class AuthService {
     this.jwtSecret = this.configService.getOrThrow('JWT_SECRET');
   }
 
+  createJwtToken(payload: JwtTokenPayload): string {
+    return jwt.sign(payload, this.jwtSecret);
+  }
+
   async register(dto: RegisterDto): Promise<AuthResponse> {
     const existingUser = await this.userRepository.findOne({
       where: { email: dto.email },
@@ -36,19 +40,14 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(dto.password, SALT_ROUNDS);
-    console.log(
-      'Registering user:',
-      dto.email,
-      'with hashed password:',
-      hashedPassword,
-    );
+
     const user = { email: dto.email, password: hashedPassword };
 
     const savedUser = await this.userRepository.save(user);
 
     const payload: JwtTokenPayload = { email: user.email, id: savedUser.id };
 
-    const jwtToken = jwt.sign(payload, this.jwtSecret);
+    const jwtToken = this.createJwtToken(payload);
 
     return { email: user.email, token: jwtToken };
   }
@@ -76,7 +75,7 @@ export class AuthService {
       id: existingUser.id,
     };
 
-    const jwtToken = jwt.sign(payload, this.jwtSecret);
+    const jwtToken = this.createJwtToken(payload);
 
     return { email: existingUser.email, token: jwtToken };
   }

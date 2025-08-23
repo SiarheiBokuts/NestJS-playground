@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { JwtTokenPayload } from 'src/modules/auth/auth.model';
+import { JwtTokenData } from 'src/modules/auth/auth.model';
 import jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 
@@ -18,24 +18,22 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const request = context.switchToHttp().getRequest();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const token: string = request.token;
+    const request = context.switchToHttp().getRequest<Request>();
+    const token = request.token;
     if (!token) {
       throw new UnauthorizedException();
     }
     try {
-      const decoded: JwtTokenPayload = jwt.verify(
+      const decoded: JwtTokenData = jwt.verify(
         token,
         this.jwtSecret,
-      ) as JwtTokenPayload;
+      ) as JwtTokenData;
 
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      request['user'] = decoded;
-    } catch {
+      request.user = decoded;
+    } catch (error) {
+      console.error('JWT verification failed:', error);
       throw new UnauthorizedException();
     }
     return true;
