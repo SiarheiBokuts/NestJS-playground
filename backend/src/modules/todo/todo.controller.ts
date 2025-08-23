@@ -1,13 +1,25 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { Todo } from 'src/db/entities/todo.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
+import express from 'express';
 
 @Controller('todos')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
+  @UseGuards(AuthGuard)
   @Get()
-  async getAll(): Promise<Todo[]> {
-    return await this.todoService.findAll();
+  async getAll(@Req() req: express.Request): Promise<Todo[]> {
+    return await this.todoService.findAll(req.user!.id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post()
+  async addTodo(
+    @Req() req: express.Request,
+    @Body() todo: { title: string },
+  ): Promise<Todo> {
+    return await this.todoService.create(todo, req.user!.id);
   }
 }

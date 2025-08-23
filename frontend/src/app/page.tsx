@@ -27,7 +27,6 @@ export default function Home() {
   const loginMutation = useMutation({
     mutationFn: (data: SignUpData) => login(data),
     onSuccess: (data) => {
-      debugger;
       setAuth(data.token, data.email);
       console.log("Log in Successful:", data);
       setIsLoginModalOpen(false);
@@ -87,36 +86,7 @@ export default function Home() {
             <p className="text-center text-gray-600">
               Welcome to your Todo App. Add tasks below!
             </p>
-
             <TodoList />
-
-            {/* Example input */}
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Add new task..."
-                className="flex-1 border px-3 py-2 rounded"
-              />
-              <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                Add
-              </button>
-            </div>
-
-            {/* Example task list */}
-            <ul className="flex flex-col gap-2">
-              <li className="flex justify-between items-center border p-2 rounded">
-                <span>Example Task 1</span>
-                <button className="text-red-500 hover:text-red-700">
-                  Delete
-                </button>
-              </li>
-              <li className="flex justify-between items-center border p-2 rounded">
-                <span>Example Task 2</span>
-                <button className="text-red-500 hover:text-red-700">
-                  Delete
-                </button>
-              </li>
-            </ul>
           </div>
         ) : (
           <p className="text-center text-gray-600">Log in to see your Todos</p>

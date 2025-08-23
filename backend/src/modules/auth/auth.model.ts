@@ -3,6 +3,11 @@ export type JwtTokenPayload = {
   id: string;
 };
 
+export type JwtTokenData = JwtTokenPayload & {
+  iat: number;
+  exp?: number;
+};
+
 export type AuthResponse = {
   email: string;
   token: string;

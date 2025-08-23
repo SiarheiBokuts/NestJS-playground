@@ -3,14 +3,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuth } from "@/app/context/AuthContext";
+import { Todo } from "@/types/todo";
 
-export interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
-}
-
-const API_BASE = "http://localhost:4200/todos";
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/todos`;
 
 export const useTodos = () => {
   const { token } = useAuth();

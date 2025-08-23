@@ -6,7 +6,6 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { User } from './user.entity';
-// import { User } from './user.entity';
 
 @Entity('todos')
 export class Todo {
@@ -18,9 +17,6 @@ export class Todo {
   @Column({ length: 255 })
   title: string;
 
-  @Column({ type: 'text', nullable: true })
-  description: string;
-
   @Column({ default: false })
   isCompleted: boolean;
 
@@ -30,7 +26,11 @@ export class Todo {
   @Column({ type: 'timestamp', nullable: true })
   completedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.todos)
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (user) => user.todos, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    nullable: false,
+  })
+  @JoinColumn({ name: 'user_id', foreignKeyConstraintName: 'fk_todo_user' })
   user: User;
 }

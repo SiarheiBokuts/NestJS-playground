@@ -1,7 +1,7 @@
 "use client";
 
 import { validateToken } from "@/services/auth";
-import { AuthResponse, AuthState } from "@/types/auth";
+import { AuthResponse } from "@/types/auth";
 import { useMutation } from "@tanstack/react-query";
 import {
   createContext,
@@ -11,7 +11,10 @@ import {
   useEffect,
 } from "react";
 
-// TODO: use Bearer token for auth
+interface AuthState {
+  token: string | null;
+  email: string | null;
+}
 
 interface AuthContextType extends AuthState {
   setAuth: (token: string | null, email: string | null) => void;
