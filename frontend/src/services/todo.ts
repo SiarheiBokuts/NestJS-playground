@@ -19,3 +19,16 @@ export const addTodo = async (
   );
   return response.data;
 };
+
+export const deleteTodo = async (
+  todoId: string,
+  token: string
+): Promise<Todo> => {
+  const response = await axios.delete(`${API_BASE}/${todoId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // если нужно
+    },
+  });
+
+  return response.data;
+};

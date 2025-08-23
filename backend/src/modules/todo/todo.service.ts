@@ -37,4 +37,9 @@ export class TodoService {
 
     return savedTodo;
   }
+
+  async delete(todoId: string, userId: string): Promise<boolean> {
+    await this.todoRepository.delete({ id: todoId, userId });
+    return true;
+  }
 }

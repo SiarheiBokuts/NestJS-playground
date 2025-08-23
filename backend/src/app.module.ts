@@ -6,6 +6,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { TodoModule } from './modules/todo/todo.module';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 
 @Module({
   imports: [
@@ -25,5 +26,6 @@ import { TodoModule } from './modules/todo/todo.module';
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

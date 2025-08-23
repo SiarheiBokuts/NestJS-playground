@@ -79,4 +79,10 @@ export class AuthService {
 
     return { email: existingUser.email, token: jwtToken };
   }
+
+  async findUser(userId: string, userEmail: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { id: userId, email: userEmail },
+    });
+  }
 }

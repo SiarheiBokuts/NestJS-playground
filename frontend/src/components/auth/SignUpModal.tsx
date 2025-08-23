@@ -2,11 +2,6 @@
 import { SignUpData } from "@/types/auth";
 import { useState } from "react";
 
-// TODO:
-// add validation
-// add spinner
-// add error handling
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
