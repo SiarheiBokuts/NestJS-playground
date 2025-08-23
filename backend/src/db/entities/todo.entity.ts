@@ -32,5 +32,9 @@ export class Todo {
     nullable: false,
   })
   @JoinColumn({ name: 'user_id', foreignKeyConstraintName: 'fk_todo_user' })
-  user: User;
+  user?: User;
+
+  // Exclude userId from default select queries to enhance security and reduce payload size
+  @Column({ name: 'user_id', select: false })
+  userId?: string;
 }
