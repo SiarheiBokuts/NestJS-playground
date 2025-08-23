@@ -15,15 +15,26 @@ export class TodoService {
     return this.todoRepository.find({ where: { user: { id: userId } } });
   }
 
-  async create(createTodoDto: CreateTodoDto, userId: string): Promise<Todo> {
-    const todo = {
+  async create(
+    createTodoDto: CreateTodoDto,
+    userId: string,
+  ): Promise<Omit<Todo, 'userId' | 'user'>> {
+    const todo: Partial<Todo> = {
       ...createTodoDto,
       isCompleted: false,
       createdAt: new Date(),
-      user: { id: userId },
-    } as Todo;
+      userId: userId,
+    };
 
     const createdTodo = this.todoRepository.create(todo);
-    return this.todoRepository.save(createdTodo);
+
+    const savedTodo = await this.todoRepository.save(createdTodo);
+
+    // Removed `user` and `userId` before returning the object
+    // to avoid exposing internal relation details in the API response.
+    savedTodo.user = undefined;
+    savedTodo.userId = undefined;
+
+    return savedTodo;
   }
 }
