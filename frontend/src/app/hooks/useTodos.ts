@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuth } from "@/app/context/AuthContext";
 import { Todo } from "@/types/todo";
+import { withAuthHeader } from "@/services/helpers/withAuthHeader";
 
 const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/todos`;
 
@@ -14,9 +15,7 @@ export const useTodos = () => {
     queryKey: ["todos"],
     queryFn: async () => {
       const response = await axios.get(API_BASE, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: withAuthHeader(token!),
       });
       return response.data;
     },

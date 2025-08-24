@@ -40,4 +40,13 @@ export class TodoController {
   ): Promise<any> {
     return await this.todoService.delete(todoId, req.user!.id);
   }
+
+  @UseGuards(AuthGuard)
+  @Post(':id/complete')
+  async completeTodo(
+    @Req() req: express.Request,
+    @Param('id') todoId: string,
+  ): Promise<any> {
+    return await this.todoService.complete(todoId, req.user!.id);
+  }
 }

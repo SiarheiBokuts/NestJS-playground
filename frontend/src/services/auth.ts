@@ -1,5 +1,6 @@
 import { AuthResponse, SignUpData } from "@/types/auth";
 import axios from "axios";
+import { withAuthHeader } from "./helpers/withAuthHeader";
 
 const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/auth`;
 
@@ -19,7 +20,7 @@ export const validateToken = async (
   token: string
 ): Promise<Omit<AuthResponse, "token">> => {
   const response = await axios.post(`${API_BASE}/validate`, null, {
-    headers: { authorization: `Bearer ${token}` },
+    headers: withAuthHeader(token!),
   });
   return response.data;
 };

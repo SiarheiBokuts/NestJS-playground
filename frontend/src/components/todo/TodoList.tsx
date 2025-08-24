@@ -3,9 +3,12 @@
 import { useAuth } from "@/app/context/AuthContext";
 import { useTodos } from "@/app/hooks/useTodos";
 import { queryClient } from "@/app/query-client";
-import { addTodo, deleteTodo } from "@/services/todo";
+import { addTodo, completeTodo, deleteTodo } from "@/services/todo";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { CheckIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 export default function TodoList() {
   const { token } = useAuth();
@@ -39,6 +42,19 @@ export default function TodoList() {
     },
   });
 
+  const completeTaskMutation = useMutation({
+    mutationFn: async (todoId: string) => {
+      return completeTodo(todoId, token!);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] }); // reload todo list
+    },
+    onError: (error) => {
+      console.error("Error completing task:", error);
+      alert("Error completing task. Please try again later.");
+    },
+  });
+
   if (!token) return <p>Please log in to see your tasks.</p>;
 
   if (isLoading) return <p className="text-center py-4">Loading...</p>;
@@ -48,7 +64,7 @@ export default function TodoList() {
 
   return (
     <div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 pb-2">
         <input
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
@@ -69,12 +85,35 @@ export default function TodoList() {
         {todos?.map((todo) => (
           <li key={todo.id} className="flex justify-between border p-2 rounded">
             <span>{todo.title}</span>
-            <button
-              onClick={() => removeTaskMutation.mutate(todo.id)}
-              className="text-red-500 hover:text-red-700 cursor-pointer"
-            >
-              Delete
-            </button>
+
+            <div className="flex">
+              {/* Complete */}
+
+              {todo.isCompleted ? null : (
+                <button
+                  onClick={() => completeTaskMutation.mutate(todo.id)}
+                  className="text-green-500 hover:text-green-700 cursor-pointer flex items-center w-5 h-5 mr-2"
+                >
+                  <CheckIcon className="w-5 h-5" />
+                </button>
+              )}
+
+              {/* Info */}
+              <button
+                onClick={() => {}}
+                className="text-neutral-500 hover:text-neutral-700 cursor-pointer flex items-center w-5 h-5 mr-2"
+              >
+                <InformationCircleIcon className="w-5 h-5" />
+              </button>
+
+              {/* Remove */}
+              <button
+                onClick={() => removeTaskMutation.mutate(todo.id)}
+                className="text-rose-500 hover:text-rose-700 cursor-pointer w-5 h-5"
+              >
+                <TrashIcon className="w-5 h-5" />
+              </button>
+            </div>
           </li>
         ))}
       </ul>
