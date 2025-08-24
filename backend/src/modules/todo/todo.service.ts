@@ -12,7 +12,10 @@ export class TodoService {
   ) {}
 
   async findAll(userId: string): Promise<Todo[]> {
-    return this.todoRepository.find({ where: { user: { id: userId } } });
+    return this.todoRepository.find({
+      where: { user: { id: userId } },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async create(
@@ -40,6 +43,14 @@ export class TodoService {
 
   async delete(todoId: string, userId: string): Promise<boolean> {
     await this.todoRepository.delete({ id: todoId, userId });
+    return true;
+  }
+
+  async complete(todoId: string, userId: string): Promise<boolean> {
+    await this.todoRepository.update(
+      { id: todoId, userId },
+      { isCompleted: true, completedAt: new Date() },
+    );
     return true;
   }
 }
