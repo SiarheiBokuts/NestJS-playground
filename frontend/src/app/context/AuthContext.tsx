@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   >({
     mutationFn: (token) => validateToken(token),
     onSuccess: (data, tokenFromMutateCall) => {
-      setAuth(tokenFromMutateCall, data.email); // обновляем authState и localStorage
+      setAuth(tokenFromMutateCall, data.email);
     },
     onError: () => {
       setAuthState({ token: null, email: null });
