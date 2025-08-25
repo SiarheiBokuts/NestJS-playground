@@ -31,17 +31,14 @@ export default function LoginModal({
     onSubmit({ email, password });
   };
 
-  if (!isOpen) return null;
+  // if (!isOpen) return null;
 
   return (
     <Dialog
       open={isOpen}
       onClose={onClose}
       transition
-      className="fixed inset-0 flex w-screen items-center justify-center bg-black/30 p-4 transition duration-300 ease-out data-closed:opacity-0"
-
-      // transition
-      // className="fixed inset-0 flex w-screen items-center justify-center "
+      className="fixed inset-0 flex w-screen items-center justify-center bg-black/30 p-4 transition duration-500 ease-out data-closed:opacity-0"
     >
       {/* Overlay */}
       <DialogBackdrop className="fixed inset-0 bg-black/50" />
