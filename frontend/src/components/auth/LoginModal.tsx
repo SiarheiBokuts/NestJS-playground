@@ -38,7 +38,7 @@ export default function LoginModal({
       open={isOpen}
       onClose={onClose}
       transition
-      className="fixed inset-0 flex w-screen items-center justify-center bg-black/30 p-4 transition duration-500 ease-out data-closed:opacity-0"
+      className="fixed inset-0 flex w-screen items-center justify-center bg-black/30 p-4 transition duration-300 ease-out data-closed:opacity-0"
     >
       {/* Overlay */}
       <DialogBackdrop className="fixed inset-0 bg-black/50" />
@@ -73,14 +73,14 @@ export default function LoginModal({
             <div className="flex justify-end gap-2 mt-2">
               <button
                 type="button"
-                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+                className="px-4 py-2 cursor-pointer rounded bg-gray-200 hover:bg-gray-300"
                 onClick={onClose}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className={`px-4 py-2 rounded text-white ${
+                className={`px-4 py-2 cursor-pointer rounded text-white ${
                   loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
                 }`}
                 disabled={loading}
