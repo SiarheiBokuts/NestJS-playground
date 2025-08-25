@@ -40,16 +40,18 @@ export default function TodoInfoModal({ isOpen, onClose, todo }: ModalProps) {
               <span className="font-semibold">Title:</span> {todo.title}
             </p>
             <p>
-              <span className="font-semibold">Completed:</span>{" "}
+              <span className="font-semibold">Completed:</span>
               {todo.isCompleted ? "Yes" : "No"}
             </p>
             <p>
-              <span className="font-semibold">Created At:</span>{" "}
+              <span className="font-semibold">Created At:</span>
               {new Date(todo.createdAt).toLocaleString()}
             </p>
             <p>
-              <span className="font-semibold">Completed At:</span>{" "}
-              {new Date(todo.completedAt).toLocaleString()}
+              <span className="font-semibold">Completed At: </span>
+              {todo.completedAt
+                ? new Date(todo.completedAt).toLocaleString()
+                : "Not completed"}
             </p>
           </div>
         </DialogPanel>

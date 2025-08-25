@@ -20,10 +20,10 @@ export class Todo {
   @Column({ default: false })
   isCompleted: boolean;
 
-  @Column({ type: 'timestamp', nullable: false })
+  @Column({ type: 'timestamptz', nullable: false })
   createdAt: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   completedAt: Date;
 
   @ManyToOne(() => User, (user) => user.todos, {
