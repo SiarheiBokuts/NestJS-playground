@@ -1,8 +1,7 @@
-version: '3.9'
 name: nestjs-playground
 
 services:
-  postgres:
+  nestjs_playground_postgres:
     image: postgres:16-alpine
     container_name: postgres_nestjs_playground
     restart: always
@@ -11,9 +10,15 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     ports:
-      - "5432:5432"
+      - '55432:5432'
     volumes:
-      - nestjs_playground_pgdata:/var/lib/postgresql/data
+      - nestjs_playground_postgres_data:/var/lib/postgresql/data
+    networks:
+      - nestjs_playground_network
 
 volumes:
-  nestjs_playground_pgdata:
+  nestjs_playground_postgres_data:
+
+networks:
+  nestjs_playground_network:
+    external: true
