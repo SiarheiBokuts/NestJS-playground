@@ -6,7 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "docker:prepare": "docker compose up -d",
+    "docker:prepare:network": "bash docker/create_network.sh",
+    "docker:prepare:db": "docker compose -f docker/docker-compose.db.yml up -d --build",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
