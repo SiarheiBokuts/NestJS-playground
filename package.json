@@ -1,0 +1,14 @@
+{
+  "name": "nestjs-playground",
+  "version": "0.1.0",
+  "description": "Playground project for NestJS with Docker setup",
+  "author": "Siarhei Bokuts",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "docker:prepare:network": "bash docker/create_network.sh",
+    "docker:build:db": "yarn docker:prepare:network && docker compose -f docker/docker-compose.db.yml up -d --build",
+    "docker:build:app": "yarn docker:prepare:network && docker compose -f docker/docker-compose.app.yml up -d --build",
+    "docker:build:all": "yarn docker:prepare:network && docker compose -f docker/docker-compose.all.yml up -d"
+  }
+}
