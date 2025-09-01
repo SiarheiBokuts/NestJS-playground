@@ -1,0 +1,5 @@
+name: nestjs-playground
+
+include:
+  - ./docker-compose.db.yml
+  - ./docker-compose.app.yml
