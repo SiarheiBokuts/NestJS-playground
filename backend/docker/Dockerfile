@@ -14,8 +14,16 @@ RUN yarn install --frozen-lockfile
 # Copy all source code
 COPY . .
 
-# Copy and rename .env.docker -> .env
-COPY docker/.env.docker .env
+# Copy base environment file
+COPY .env .env
+
+# Copy special Docker override environment variables
+# These are additional values that should override the base .env for Docker deployments
+COPY docker/.env.overrides.docker .env.docker
+
+# Append Docker-specific overrides to the base .env
+# This ensures DATABASE_HOST, DATABASE_PORT, or any other overrides are applied
+RUN cat .env.docker >> .env
 
 # Build the NestJS application (if using TypeScript)
 RUN yarn build
