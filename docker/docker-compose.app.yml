@@ -3,8 +3,8 @@ name: nestjs-playground
 services:
   backend:
     build:
-      context: ../
-      dockerfile: docker/Dockerfile
+      context: ../backend/
+      dockerfile: ../docker/Dockerfile
     container_name: nestjs_backend
     restart: always
     ports:
