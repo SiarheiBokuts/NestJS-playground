@@ -30,11 +30,35 @@ NestJS learning project — Todo List app with user authentication and REST API.
 - Detailed backend documentation is available in **[backend/README.md](./backend/README.md)**.
 - Detailed frontend documentation is available in **[frontend/README.md](./frontend/README.md)**.
 
+
 ## Getting Started
 
-Quick start to run the project locally without reading full documentation.
+Quick start to run the project locally. Choose one of the options below.
 
-### Infrastructure
+---
+
+### 1) Full Docker Setup (All Services)
+
+This version runs **frontend, backend, and database** inside Docker containers.
+
+#### Start Database
+
+```bash
+# from the project root
+# start all services (database, backend, frontend)
+yarn docker:up:all
+``` 
+
+Access the app at http://localhost:3000/.
+Make sure all containers are running and linked correctly.
+
+
+
+### 2) Development Setup (Database Only in Docker)
+
+This version is for local development. Only the database runs in Docker; backend and frontend run locally.
+
+#### Infrastructure
 
 ```bash
 # from the root 
@@ -42,7 +66,7 @@ Quick start to run the project locally without reading full documentation.
 yarn docker:up:db
 ```
 
-### Backend
+#### Backend
 
 ```bash
 # navigate to backend folder
@@ -53,7 +77,7 @@ yarn install
 yarn start:dev
 ```
 
-### Frontend
+#### Frontend
 
 ```bash
 # navigate to frontend folder
