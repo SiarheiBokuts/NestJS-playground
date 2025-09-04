@@ -36,6 +36,19 @@ yarn start:dev
 
 The backend server will run on `http://localhost:8000` by default. Make sure your frontend points to this URL for API requests.
 
+## Running in Docker
+
+To run the backend with Docker:
+
+1. Make sure the database container is running (see `yarn docker:up:db`).
+
+2. From the project root, start the backend container:
+
+```bash
+yarn docker:up:backend
+```
+
+
 ## Environment Variables
 
 - The backend uses environment variables for:
@@ -77,4 +90,3 @@ The backend server will run on `http://localhost:8000` by default. Make sure you
 
 - Ensure the database is running before starting the backend
 - Environment variables are required for database connection, JWT secret, and other configurations
-- You can run the backend fully inside Docker if desired, using `docker-compose.backend.yml`
