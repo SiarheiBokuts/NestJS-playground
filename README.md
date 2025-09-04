@@ -86,4 +86,4 @@ yarn install
 yarn dev
 ```
 
-Go to the `http://localhost:3000/` to see the App 
+Access the app at http://localhost:3000/.
