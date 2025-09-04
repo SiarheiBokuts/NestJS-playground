@@ -1,0 +1,17 @@
+name: nestjs-playground
+
+services:
+  frontend:
+    build:
+      context: ../frontend/
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: nestjs_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    # networks:
+      # - nestjs_playground_network
+
+# networks:
+#   nestjs_playground_network:
+#     external: true

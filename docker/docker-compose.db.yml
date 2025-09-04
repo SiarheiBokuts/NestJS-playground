@@ -3,7 +3,7 @@ name: nestjs-playground
 services:
   nestjs_playground_postgres:
     image: postgres:16-alpine
-    container_name: postgres_nestjs_playground
+    container_name: nestjs_postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
