@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NestJS-playground Frontend
+
+This is the frontend service for the **NestJS-playground** project — a Todo List app with JWT user authentication and REST API. Built with **Next.js**, **React**, **Tailwind CSS**, and **@tanstack/react-query** for data fetching and state management.
+
+## Prerequisites
+
+- **Node.js 20** (LTS)
+- **Yarn** or **npm**
+- Backend API running on `http://localhost:8000` (see backend README)
 
 ## Getting Started
 
-First, run the development server:
+### Step 1: Install dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd frontend
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Step 2: Start the development server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The frontend server will run on [http://localhost:3000](http://localhost:3000) by default. Make sure your backend API is running so that the frontend can fetch data.
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+- The frontend can use a `.env` file for local development, e.g.:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Features
 
-## Deploy on Vercel
+- **Next.js**
+- **React 19** with **functional components** and **hooks**
+- **Tailwind CSS 4** for styling
+- **@tanstack/react-query 5** for data fetching, caching, and token validation
+- **Context API** for authentication state management (stores token/email in localStorage)
+- Modular structure for **components, hooks, and contexts** used across pages
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Running in Docker
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To run the frontend with Docker:
+
+1. Make sure the backend container is running (see `yarn docker:up:backend`).
+
+2. From the project root, start the frontend container:
+
+```bash
+yarn docker:up:frontend
+```
+
+### Notes
+
+- Make sure backend and database containers are running before starting the frontend
+- Environment variables (`NEXT_PUBLIC_API_URL`) are required for connecting to backend API
+- The frontend automatically hot-reloads on code changes during development
