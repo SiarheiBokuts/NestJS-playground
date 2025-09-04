@@ -1,0 +1,32 @@
+# Use Node.js LTS Alpine image (lightweight and production-friendly)
+FROM node:22-alpine
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy dependency definitions
+COPY package.json yarn.lock ./
+
+# Install dependencies
+RUN yarn install --frozen-lockfile
+
+# Copy the entire source code
+COPY . .
+
+# Copy the base environment configuration
+COPY .env .env
+
+# Copy Docker-specific environment overrides
+# These values (e.g., DATABASE_HOST, DATABASE_PORT) will replace or extend the base .env
+COPY docker/.env.overrides.docker .env.docker
+
+# Merge Docker overrides into the base .env file
+RUN cat .env.docker >> .env
+
+# Build the NestJS application
+
+# Expose application port (NestJS runs on 8000 by default)
+EXPOSE 8000
+
+# Run the app in production mode
+CMD ["yarn", "start:prod"]

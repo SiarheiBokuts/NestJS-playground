@@ -7,8 +7,9 @@
   "license": "UNLICENSED",
   "scripts": {
     "docker:prepare:network": "bash docker/create_network.sh",
-    "docker:build:db": "yarn docker:prepare:network && docker compose -f docker/docker-compose.db.yml up -d --build",
-    "docker:build:app": "yarn docker:prepare:network && docker compose -f docker/docker-compose.app.yml up -d --build",
-    "docker:build:all": "yarn docker:prepare:network && docker compose -f docker/docker-compose.all.yml up -d"
+    "docker:up:db": "yarn docker:prepare:network && docker compose -f docker/docker-compose.db.yml up -d --build",
+    "docker:up:backend": "yarn docker:prepare:network && docker compose -f docker/docker-compose.backend.yml up -d --build",
+    "docker:up:frontend": "yarn docker:prepare:network && docker compose -f docker/docker-compose.frontend.yml up -d --build",
+    "docker:up:all": "yarn docker:prepare:network && docker compose -f docker/docker-compose.all.yml up -d --build"
   }
 }

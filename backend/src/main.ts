@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,7 +21,10 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const PORT = process.env.PORT || 8000;
+  // доступ к конфигу
+  const configService = app.get(ConfigService);
+
+  const PORT: string = configService.getOrThrow('PORT');
   console.log(`Starting server on port ${PORT}`);
   await app.listen(PORT);
 }
