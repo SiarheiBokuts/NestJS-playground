@@ -1,6 +1,6 @@
 # NestJS-playground
 
-NestJS learning project — Todo List app with user authentication and REST API. Demonstrates core NestJS concepts and modern frontend practices. Great for showcasing backend skills, frontend skills, and usage of modern Node.js and React frameworks.
+NestJS learning project — Todo List app with user authentication using JWT and REST API. Demonstrates core NestJS concepts and modern frontend practices. Great for showcasing backend skills (NestJS, JWT, TypeORM), frontend skills (React, Tailwind, React Query), and usage of modern Node.js and React frameworks.
 
 ## Project Structure
 
@@ -40,8 +40,6 @@ Quick start to run the project locally. Choose one of the options below.
 ### 1) Full Docker Setup (All Services)
 
 This version runs **frontend, backend, and database** inside Docker containers.
-
-#### Start Database
 
 ```bash
 # from the project root
