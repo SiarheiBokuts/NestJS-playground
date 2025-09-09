@@ -24,6 +24,7 @@ COPY docker/.env.overrides.docker .env.docker
 RUN cat .env.docker >> .env
 
 # Build the NestJS application
+RUN yarn build
 
 # Expose application port (NestJS runs on 8000 by default)
 EXPOSE 8000
