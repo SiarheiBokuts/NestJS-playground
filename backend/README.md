@@ -16,7 +16,7 @@ From the project root, run:
 
 ```bash
 yarn docker:up:db
-```
+```cd
 
 This will start a PostgreSQL database inside Docker. Make sure it is running before starting the backend.
 

@@ -31,8 +31,6 @@ export default function LoginModal({
     onSubmit({ email, password });
   };
 
-  // if (!isOpen) return null;
-
   return (
     <Dialog
       open={isOpen}

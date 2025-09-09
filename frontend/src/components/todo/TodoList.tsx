@@ -4,13 +4,14 @@ import { useAuth } from "@/app/context/AuthContext";
 import { useTodos } from "@/app/hooks/useTodos";
 import { queryClient } from "@/app/query-client";
 import { addTodo, completeTodo, deleteTodo } from "@/services/todo";
-import { useMutation } from "@tanstack/react-query";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import TodoInfoModal from "./TodoInfoModal";
 import { Todo } from "@/types/todo";
+import ConfirmModal from "../shared/modals/ConfirmModal";
 
 export default function TodoList() {
   const { token } = useAuth();
@@ -21,6 +22,11 @@ export default function TodoList() {
   // Todo Info Modal State
   const [isTodoInfoModalOpen, setIsTodoModalOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+
+  // Delete Confirmation Modal State
+  const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
+    useState(false);
+  const [todoToDelete, setTodoToDelete] = useState<Todo | null>(null);
 
   // Mutations
   const addTaskMutation = useMutation({
@@ -122,7 +128,10 @@ export default function TodoList() {
 
                 {/* Remove */}
                 <button
-                  onClick={() => removeTaskMutation.mutate(todo.id)}
+                  onClick={() => {
+                    setIsDeleteConfirmModalOpen(true);
+                    setTodoToDelete(todo);
+                  }}
                   className="text-rose-500 hover:text-rose-700 cursor-pointer w-5 h-5"
                 >
                   <TrashIcon className="w-5 h-5" />
@@ -137,6 +146,17 @@ export default function TodoList() {
         isOpen={isTodoInfoModalOpen}
         todo={selectedTodo!}
         onClose={() => setIsTodoModalOpen(false)}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={isDeleteConfirmModalOpen}
+        message="Are you sure you want to delete this todo?"
+        onConfirm={() => {
+          if (!todoToDelete) return;
+          removeTaskMutation.mutate(todoToDelete!.id);
+        }}
+        onClose={() => setIsDeleteConfirmModalOpen(false)}
       />
     </>
   );

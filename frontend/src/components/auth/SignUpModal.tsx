@@ -1,6 +1,12 @@
 "use client";
 import { SignUpData } from "@/types/auth";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -25,55 +31,65 @@ export default function SignUpModal({
     onSubmit({ email, password });
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-xl font-bold mb-4">Sign Up</h2>
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            placeholder="Email"
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="Password"
-            className="border px-3 py-2 rounded"
-          />
-          {error && (
-            <p className="text-red-500 text-sm">
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {(error as any)?.response?.data?.message ||
-                "Something went wrong"}
-            </p>
-          )}
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      transition
+      className="fixed inset-0 flex w-screen items-center justify-center bg-black/30 p-4 transition duration-300 ease-out data-closed:opacity-0"
+    >
+      {/* Overlay */}
+      <DialogBackdrop className="fixed inset-0 bg-black/50" />
 
-          <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
-              onClick={onClose}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className={`px-4 py-2 rounded text-white ${
-                loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-              }`}
-              disabled={loading}
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <DialogPanel className="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 transition duration-300 ease-out data-[closed]:opacity-0 data-[closed]:scale-95">
+          <DialogTitle className="text-xl font-bold mb-4">Sign Up</DialogTitle>
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Email"
+              className="border px-3 py-2 rounded"
+              required
+            />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Password"
+              className="border px-3 py-2 rounded"
+              required
+            />
+            {error && (
+              <p className="text-red-500 text-sm">
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {(error as any)?.response?.data?.message ||
+                  "Something went wrong"}
+              </p>
+            )}
+
+            <div className="flex justify-end gap-2 mt-2">
+              <button
+                type="button"
+                className="px-4 py-2 cursor-pointer rounded bg-gray-200 hover:bg-gray-300"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className={`px-4 py-2 cursor-pointer rounded text-white ${
+                  loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+                }`}
+                disabled={loading}
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
+        </DialogPanel>
       </div>
-    </div>
+    </Dialog>
   );
 }
