@@ -87,3 +87,25 @@ yarn dev
 ```
 
 Access the app at http://localhost:3000/.
+
+
+## Possible Improvements
+
+The current authentication flow is intentionally simple for learning purposes — a single JWT token is stored in `localStorage` and sent with each request.  
+While this works, it has some **security and UX limitations**:
+
+- **Security risks**: Storing tokens in `localStorage` makes them accessible from JavaScript (potential XSS attacks).  
+- **No token refresh**: Once the token expires, the user must log in again.  
+- **No CSRF protection**: Requests are not protected against cross-site request forgery.  
+- **UX limitations**: The UI could be more user-friendly, especially when handling long lists of todos.
+
+### How to improve
+- Use **Access + Refresh tokens** instead of a single JWT.  
+- Store the Refresh token in an **HTTP-only, Secure cookie**, and keep the Access token in memory only.  
+- Implement **silent refresh** (refreshing the Access token automatically before it expires).  
+- Rotate Refresh tokens to reduce risk if they are compromised.  
+- Add CSRF protection middleware on the backend.  
+- **Enhance the frontend UI**: make it more responsive, intuitive, and visually appealing.  
+- Implement **pagination and/or infinite scroll** for lists of todos to improve performance and usability.
+
+This would make the project production-ready in terms of authentication, session management, and overall user experience.
