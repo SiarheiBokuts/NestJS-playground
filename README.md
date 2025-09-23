@@ -95,7 +95,7 @@ The current authentication flow is intentionally simple for learning purposes â€
 While this works, it has some **security and UX limitations**:
 
 - **Security risks**: Storing tokens in `localStorage` makes them accessible from JavaScript (potential XSS attacks).  
-- **No token refresh**: Once the token expires, the user must log in again.  
+- **No token expiration handling**: Currently, the token has no expiration set, so there is no automatic refresh or session expiry.  
 - **No CSRF protection**: Requests are not protected against cross-site request forgery.  
 - **UX limitations**: The UI could be more user-friendly, especially when handling long lists of todos.
 
@@ -108,4 +108,5 @@ While this works, it has some **security and UX limitations**:
 - **Enhance the frontend UI**: make it more responsive, intuitive, and visually appealing.  
 - Implement **pagination and/or infinite scroll** for lists of todos to improve performance and usability.
 
-This would make the project production-ready in terms of authentication, session management, and overall user experience.
+This would make the project production-ready in terms of authentication, session management, and overall user experience. ðŸ¤—
+
