@@ -4,7 +4,7 @@ This is the frontend service for the **NestJS-playground** project — a Todo Li
 
 ## Prerequisites
 
-- **Node.js 20** (LTS)
+- **Node.js 22** (LTS)
 - **Yarn** or **npm**
 - Backend API running on `http://localhost:8000` (see backend README)
 
