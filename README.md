@@ -96,17 +96,20 @@ While this works, it has some **security and UX limitations**:
 
 - **Security risks**: Storing tokens in `localStorage` makes them accessible from JavaScript (potential XSS attacks).  
 - **No token expiration handling**: Currently, the token has no expiration set, so there is no automatic refresh or session expiry.  
-- **No CSRF protection**: Requests are not protected against cross-site request forgery.  
-- **UX limitations**: The UI could be more user-friendly, especially when handling long lists of todos.
+- **UX limitations**: The UI could be more user-friendly, especially when handling long lists of todos.  
+- **CSRF protection**: Not required with the current setup, because authentication is handled via JWT in the Authorization header. If tokens were stored in cookies, CSRF protection would be necessary.  
 
 ### How to improve
+
+**Authentication & Security**  
 - Use **Access + Refresh tokens** instead of a single JWT.  
 - Store the Refresh token in an **HTTP-only, Secure cookie**, and keep the Access token in memory only.  
-- Implement **silent refresh** (refreshing the Access token automatically before it expires).  
+- Implement **silent refresh** to automatically refresh the Access token before it expires.  
 - Rotate Refresh tokens to reduce risk if they are compromised.  
-- Add CSRF protection middleware on the backend.  
+- Add CSRF protection middleware on the backend **if authentication is moved to cookies**.  
+
+**UX & Frontend**  
 - **Enhance the frontend UI**: make it more responsive, intuitive, and visually appealing.  
-- Implement **pagination and/or infinite scroll** for lists of todos to improve performance and usability.
+- Implement **pagination or infinite scroll** for long lists of todos to improve performance and usability.  
 
-This would make the project production-ready in terms of authentication, session management, and overall user experience. 🤗
-
+Following these improvements would make the project production-ready in terms of authentication, session management, and overall user experience. 🤗
