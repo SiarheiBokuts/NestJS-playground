@@ -2,6 +2,10 @@
 
 NestJS learning project — Todo List app with user authentication using JWT and REST API. Demonstrates core NestJS concepts and modern frontend practices. Great for showcasing backend skills (NestJS, JWT, TypeORM), frontend skills (React, Tailwind, React Query), and usage of modern Node.js and React frameworks.
 
+## Demo
+
+▶️ https://github.com/user-attachments/assets/06459d13-d412-428d-a6e8-2c4a4624048c
+
 ## Project Structure
 
 - **[backend/](./backend)** — All NestJS backend logic:
