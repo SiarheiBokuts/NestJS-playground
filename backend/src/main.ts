@@ -21,7 +21,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // доступ к конфигу
   const configService = app.get(ConfigService);
 
   const PORT: string = configService.getOrThrow('PORT');
